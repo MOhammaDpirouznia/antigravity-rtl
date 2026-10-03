@@ -31,12 +31,18 @@ By default, **Google Antigravity** renders all conversational output, prompts, a
 
 ---
 
-## 📸 Preview
+## 📸 Visual Comparison (Before vs After)
 
-### Before Patch (Standard LTR - Misaligned):
-![Before Patch](assets/preview-before.png)
+<div align="center">
+  <img src="assets/comparison.png" alt="Antigravity RTL Comparison" width="100%">
+</div>
 
-> **Notice:** Persian text is left-aligned, bullet points are on the wrong side, and punctuation is misplaced.
+| ❌ Before Patch (Default LTR) | ✅ After Patch (Antigravity RTL) |
+| :--- | :--- |
+| • Persian/Arabic text forced to the left | • Automatic Right-to-Left (RTL) alignment |
+| • Bullet points awkwardly anchored to left | • Bullet points & numbers naturally positioned on the right |
+| • Misplaced punctuation (periods, colons, brackets) | • Proper punctuation placement at the natural end of lines |
+| • Disrupted mixed English & Persian sentences | • Flawless inline English & code keywords |
 
 ---
 
