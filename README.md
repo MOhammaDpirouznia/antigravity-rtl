@@ -1,0 +1,105 @@
+<div align="center">
+
+<img src="assets/banner.png" alt="Antigravity RTL Banner" width="100%">
+
+# Antigravity RTL & BiDi Support
+
+**Seamless automatic Right-to-Left (RTL) & Bidirectional text formatting for Google Antigravity**
+
+[![GitHub Release](https://img.shields.io/github/v/release/MOhammaDpirouznia/antigravity-rtl?style=for-the-badge&logo=github&color=00D26A)](https://github.com/MOhammaDpirouznia/antigravity-rtl/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
+[![Platform](https://img.shields.io/badge/Platform-Windows-0078D6.svg?style=for-the-badge&logo=windows)](https://github.com/MOhammaDpirouznia/antigravity-rtl)
+[![Stars](https://img.shields.io/github/stars/MOhammaDpirouznia/antigravity-rtl?style=for-the-badge&color=ffb703)](https://github.com/MOhammaDpirouznia/antigravity-rtl/stargazers)
+
+---
+
+### 🌐 Select Language / تغییر زبان / اختر لغتك / زبان تبدیل کریں
+[**English**](README.md) • [**فارسی (Persian)**](docs/README.fa.md) • [**العربية (Arabic)**](docs/README.ar.md) • [**اردو (Urdu)**](docs/README.ur.md)
+
+---
+
+</div>
+
+## 📌 Overview
+
+By default, **Google Antigravity** renders all conversational output, prompts, and markdown lists using standard Left-to-Right (`LTR`) orientation. When reading or writing in Right-to-Left languages such as **Persian (فارسی)**, **Arabic (العربية)**, **Urdu (اردو)**, or **Hebrew (עברית)**:
+* Punctuation marks (periods, colons, parentheses) appear misplaced at the wrong side of the line.
+* List bullet points and numbered lists remain awkwardly anchored to the left.
+* Sentences mixing English keywords (like model names or code identifiers) become jumbled.
+
+**Antigravity RTL** solves this fundamentally by injecting a smart CSS & Preload patch directly into the application runtime, enabling Chromium's native `unicode-bidi: plaintext` engine for real-time, auto-detected RTL and LTR text formatting.
+
+---
+
+## 📸 Preview
+
+### Before Patch (Standard LTR - Misaligned):
+![Before Patch](assets/preview-before.png)
+
+> **Notice:** Persian text is left-aligned, bullet points are on the wrong side, and punctuation is misplaced.
+
+---
+
+## ✨ Features
+
+* **⚡ 100% Real-Time & Automatic:** Directionality is computed on the fly as the model streams words. Paragraphs starting with RTL characters align to the right, while English paragraphs stay left.
+* **💻 Strict Code Block Isolation:** Inline code (`code`), multi-line code blocks (`pre`), Monaco editor, and terminal outputs are strictly preserved in Left-to-Right (`LTR`) with standard monospace typography.
+* **✍️ User Input Alignment:** As you type prompts in the input box, text direction automatically adjusts according to the language you are writing.
+* **🔤 Enhanced Persian/Arabic Typography:** Includes fallback styling for modern RTL fonts (`Vazirmatn`, `Segoe UI`, `Tahoma`) for enhanced readability.
+* **🛠️ DevTools Shortcut Enabled:** Adds `Ctrl + Shift + I` shortcut to easily inspect elements and toggle Developer Tools.
+* **🛡️ Zero Risk & Instant Rollback:** An automatic backup (`app.asar.backup`) is created before applying any changes. You can restore original factory settings with a single click.
+
+---
+
+## 🚀 Quick Installation (1-Click)
+
+### Option 1: Using the Ready Package (Recommended)
+1. Download the latest release from the [**Releases Page**](https://github.com/MOhammaDpirouznia/antigravity-rtl/releases) (or clone this repository).
+2. Extract the downloaded archive.
+3. Double-click **`apply-patch.bat`**.
+4. The patcher will safely close Antigravity, create a backup, apply the patch, and relaunch Antigravity with full RTL support.
+
+---
+
+## 🔄 Restoration / Uninstall
+
+If you ever wish to revert Antigravity back to its original default state:
+1. Double-click **`restore-original.bat`**.
+2. The script restores the factory `app.asar.backup` and relaunches the app.
+
+---
+
+## ⚙️ Advanced: Auto-Patcher for Future Updates
+
+If Google Antigravity receives a major application update in the future that overwrites the core bundle, you can dynamically unpack, patch, and repack the new version using PowerShell:
+
+```powershell
+# Run with PowerShell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\scripts\auto-patch-script.ps1
+```
+
+*Requirements for dynamic script: Node.js / npx installed on your machine.*
+
+---
+
+## 🔬 How It Works (Technical Overview)
+
+Antigravity 2.0 is built on the **Electron / Chromium** architecture. The application package (`app.asar`) contains a `dist/preload.js` script that executes in every BrowserWindow before DOM rendering.
+
+This patch hooks into `preload.js` and applies:
+1. `unicode-bidi: plaintext !important; text-align: start !important;` to message containers, paragraphs, headers, and inputs.
+2. Dynamic `dir="auto"` attribute injection across dynamic markdown DOM mutations (using a `MutationObserver`).
+3. Explicit `direction: ltr !important; unicode-bidi: isolate !important;` isolation for all `pre`, `code`, tables, and terminal containers.
+
+---
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/MOhammaDpirouznia/antigravity-rtl/issues).
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).

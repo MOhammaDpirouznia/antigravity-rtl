@@ -1,0 +1,9 @@
+# Logs and temp files
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+node_modules/
+dist_temp/
+*.backup
+*.zip
