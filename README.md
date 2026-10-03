@@ -100,6 +100,30 @@ This patch hooks into `preload.js` and applies:
 
 ---
 
+## ❓ Frequently Asked Questions (FAQ)
+
+### Why is Persian, Arabic, or Urdu text left-aligned in Google Antigravity?
+By default, the Electron renderer in Google Antigravity lacks native `dir="auto"` or `unicode-bidi: plaintext` rules on its message markdown containers. As a result, all paragraphs default to the standard Chromium Left-to-Right (`LTR`) orientation.
+
+### How does this patch fix the text direction issue in Antigravity?
+The patch injects modern CSS rules into Antigravity's preload script. This enables Chromium's native bidirectional algorithm to inspect the first character of each paragraph: if it's an RTL character (Persian, Arabic, Urdu, Hebrew), the paragraph instantly aligns right with proper punctuation and bullet points; if it's Latin, it remains left-aligned.
+
+### Does this patch interfere with code blocks, terminal outputs, or Monaco editor?
+No. All `<pre>`, `<code>`, Monaco editor, and terminal elements are explicitly isolated with `direction: ltr !important; text-align: left !important; unicode-bidi: isolate !important;`. Your code indentation and syntax highlighting remain completely untouched.
+
+---
+
+## 🔍 SEO & Search Keywords
+
+<details>
+<summary><b>Click to expand search keywords and indexed topics</b></summary>
+
+`google antigravity rtl` • `antigravity right to left` • `antigravity persian font` • `antigravity farsi` • `antigravity arabic fix` • `antigravity urdu support` • `antigravity hebrew` • `antigravity bidi patch` • `google antigravity text direction` • `antigravity electron asar patch` • `fix rtl in antigravity ide` • `antigravity ide persian support` • `antigravity chat right to left` • `antigravity markdown rtl` • `vazirmatn font antigravity` • `راست چین کردن آنتی گرویتی` • `حل مشکل چپ چین بودن در آنتی گرویتی` • `فارسی نویسی در گوگل آنتی گرویتی` • `پچ راست چین آنتی گرویتی` • `فونت فارسی در Antigravity` • `حل مشکل به هم ریختگی فونت فارسی در antigravity` • `محاذاة النص العربي في google antigravity` • `حل مشكلة اتجاه النص في antigravity` • `تعريب جوجل آنتی جرافيتي` • `اینٹی گریویٹی اردو سپورٹ`
+
+</details>
+
+---
+
 ## 🤝 Contributing
 
 Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/MOhammaDpirouznia/antigravity-rtl/issues).
@@ -109,3 +133,4 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
+
