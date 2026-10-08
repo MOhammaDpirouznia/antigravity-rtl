@@ -1,43 +1,79 @@
-﻿[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-$Host.UI.RawUI.WindowTitle = "Antigravity Restore Original"
+# ==============================================================
+#  Antigravity RTL - Factory Restore v1.1.0
+#  https://github.com/MOhammaDpirouznia/antigravity-rtl
+# ==============================================================
 
-Write-Host "========================================================" -ForegroundColor Cyan
-Write-Host "      بازگردانی Antigravity به حالت اولیه (پیش‌فرض)" -ForegroundColor Cyan
-Write-Host "========================================================" -ForegroundColor Cyan
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$Host.UI.RawUI.WindowTitle = "Antigravity RTL - Factory Restore"
+
+Clear-Host
+Write-Host ""
+Write-Host "==============================================================" -ForegroundColor Yellow
+Write-Host "            ANTIGRAVITY RTL - FACTORY RESTORE                 " -ForegroundColor Yellow
+Write-Host "         Revert to Stock / Original Antigravity               " -ForegroundColor DarkYellow
+Write-Host "==============================================================" -ForegroundColor Yellow
 Write-Host ""
 
-$targetDir = "$env:LOCALAPPDATA\Programs\antigravity\resources"
-$appExe = "$env:LOCALAPPDATA\Programs\antigravity\Antigravity.exe"
+$targetDir  = "$env:LOCALAPPDATA\Programs\antigravity\resources"
+$appExe     = "$env:LOCALAPPDATA\Programs\antigravity\Antigravity.exe"
 $targetAsar = Join-Path $targetDir "app.asar"
 $backupAsar = Join-Path $targetDir "app.asar.backup"
+$customCss  = Join-Path $targetDir "custom-rtl.css"
 
+# Check backup
 if (-not (Test-Path $backupAsar)) {
-    Write-Host "[خطا] فایل بکاپ پیدا نشد: $backupAsar" -ForegroundColor Red
-    Read-Host "برای خروج Enter را بزنید..."
+    Write-Host "[ERROR] Original backup file not found at:" -ForegroundColor Red
+    Write-Host "        $backupAsar" -ForegroundColor Yellow
+    Write-Host ""
+    Write-Host "No backup file is available to restore." -ForegroundColor Red
+    Write-Host ""
+    Write-Host "Press any key to exit..." -ForegroundColor Yellow
+    $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     exit 1
 }
 
-Write-Host "[1/3] بستن پردازه‌های Antigravity..." -ForegroundColor Yellow
-Get-Process -Name "Antigravity" -ErrorAction SilentlyContinue | Stop-Process -Force
-Start-Sleep -Seconds 2
+# 1. Close Antigravity
+Write-Host "[1/3] Closing running Antigravity processes..." -ForegroundColor DarkYellow
+$running = Get-Process -Name "Antigravity" -ErrorAction SilentlyContinue
+if ($running) {
+    $running | Stop-Process -Force
+    Start-Sleep -Seconds 2
+    Write-Host "      Processes closed successfully." -ForegroundColor Gray
+} else {
+    Write-Host "      No active Antigravity process found." -ForegroundColor Gray
+}
 
-Write-Host "[2/3] بازگردانی فایل اصلی برنامه از نسخه پشتیبان..." -ForegroundColor Yellow
+# 2. Restore backup
+Write-Host "[2/3] Restoring original factory app.asar..." -ForegroundColor DarkCyan
 try {
     Copy-Item -Path $backupAsar -Destination $targetAsar -Force
-    Write-Host "      فایل اصلی بازگردانده شد." -ForegroundColor Green
+    if (Test-Path $customCss) {
+        Remove-Item -Path $customCss -Force -ErrorAction SilentlyContinue
+    }
+    Write-Host "      Factory files restored successfully." -ForegroundColor Green
 } catch {
-    Write-Host "[خطا] بازگردانی ناموفق بود: $($_.Exception.Message)" -ForegroundColor Red
-    Read-Host "برای خروج Enter را بزنید..."
+    Write-Host "[ERROR] Failed to restore backup: $($_.Exception.Message)" -ForegroundColor Red
+    Write-Host ""
+    Write-Host "Press any key to exit..." -ForegroundColor Yellow
+    $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     exit 1
 }
 
-Write-Host "[3/3] راه‌اندازی مجدد Antigravity..." -ForegroundColor Cyan
-Start-Process -FilePath $appExe
+# 3. Relaunch detached
+Write-Host "[3/3] Launching Antigravity in standalone mode..." -ForegroundColor DarkCyan
+
+$psi = New-Object System.Diagnostics.ProcessStartInfo
+$psi.FileName = $appExe
+$psi.UseShellExecute = $true
+$psi.WorkingDirectory = (Split-Path $appExe)
+[System.Diagnostics.Process]::Start($psi) | Out-Null
 
 Write-Host ""
-Write-Host "========================================================" -ForegroundColor Green
-Write-Host "   ✓ برنامه با موفقیت به حالت اولیه بازگردانده شد." -ForegroundColor Green
-Write-Host "========================================================" -ForegroundColor Green
+Write-Host "==============================================================" -ForegroundColor Green
+Write-Host "   [SUCCESS] Original factory state restored successfully!    " -ForegroundColor Green
+Write-Host "==============================================================" -ForegroundColor Green
 Write-Host ""
-Write-Host "این پنجره تا ۵ ثانیه دیگر به صورت خودکار بسته می‌شود..." -ForegroundColor Gray
-Start-Sleep -Seconds 5
+Write-Host "Antigravity has been reset to its default unpatched state." -ForegroundColor White
+Write-Host ""
+Write-Host "Press any key to exit..." -ForegroundColor Yellow
+$null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")

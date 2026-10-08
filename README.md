@@ -49,9 +49,10 @@ By default, **Google Antigravity** renders all conversational output, prompts, a
 ## ✨ Features
 
 * **⚡ 100% Real-Time & Automatic:** Directionality is computed on the fly as the model streams words. Paragraphs starting with RTL characters align to the right, while English paragraphs stay left.
+* **🎨 Interactive Font Selector (v1.1.0):** Choose your favorite Persian/Arabic font directly from the terminal menu (`Vazirmatn`, `Sahel / Shabnam`, `Windows Default`, or any custom installed font).
 * **💻 Strict Code Block Isolation:** Inline code (`code`), multi-line code blocks (`pre`), Monaco editor, and terminal outputs are strictly preserved in Left-to-Right (`LTR`) with standard monospace typography.
 * **✍️ User Input Alignment:** As you type prompts in the input box, text direction automatically adjusts according to the language you are writing.
-* **🔤 Enhanced Persian/Arabic Typography:** Includes fallback styling for modern RTL fonts (`Vazirmatn`, `Segoe UI`, `Tahoma`) for enhanced readability.
+* **🚀 Decoupled Process Architecture:** Antigravity launches independently via Windows Shell Execute. Closing the installer terminal window will **never** close Antigravity.
 * **🛠️ DevTools Shortcut Enabled:** Adds `Ctrl + Shift + I` shortcut to easily inspect elements and toggle Developer Tools.
 * **🛡️ Zero Risk & Instant Rollback:** An automatic backup (`app.asar.backup`) is created before applying any changes. You can restore original factory settings with a single click.
 
@@ -63,7 +64,8 @@ By default, **Google Antigravity** renders all conversational output, prompts, a
 1. Download the latest release from the [**Releases Page**](https://github.com/MOhammaDpirouznia/antigravity-rtl/releases) (or clone this repository).
 2. Extract the downloaded archive.
 3. Double-click **`apply-patch.bat`**.
-4. The patcher will safely close Antigravity, create a backup, apply the patch, and relaunch Antigravity with full RTL support.
+4. Select your preferred font (`1` for Vazirmatn, `2` for Sahel, `3` for System Default, or `4` for Custom).
+5. The patcher will safely close Antigravity, create a backup, apply the patch, and relaunch Antigravity independently with full RTL support.
 
 ---
 
