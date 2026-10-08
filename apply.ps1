@@ -76,6 +76,42 @@ $choice = Read-Host "Select font option [0-6] (Press Enter for Vazirmatn, or 0 f
 $fontName = "Vazirmatn"
 $cssContent = ""
 
+# Helper to generate font CSS with Tailwind custom properties & element rules
+function Generate-FontCss ($family, $b64, $fallback) {
+    $fontFaceBlock = ""
+    if ($b64) {
+        $fontFaceBlock = @"
+@font-face {
+    font-family: '$family';
+    src: url('data:font/truetype;base64,$b64') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+"@
+    }
+    return @"
+$fontFaceBlock
+:root, :host, html, body {
+    --vscode-font-family: '$family', $fallback !important;
+    --font-sans: '$family', $fallback !important;
+    --default-font-family: '$family', $fallback !important;
+    font-family: '$family', $fallback !important;
+}
+body, p, li, blockquote, span, div, a, label, button, input, textarea,
+[class*="message"], [class*="content"], [class*="prose"], [class*="bubble"], [class*="text"],
+h1, h2, h3, h4, h5, h6 {
+    font-family: '$family', $fallback !important;
+}
+pre, code, kbd, samp,
+pre *, code *,
+[class*="code"], [class*="terminal"], [class*="syntax"],
+[class*="monaco"], [class*="xterm"] {
+    font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace) !important;
+}
+"@
+}
+
 switch ($choice) {
     "0" {
         $fontName = "Stock Antigravity Font (Original Unchanged)"
@@ -87,58 +123,23 @@ switch ($choice) {
         $fontName = "Cairo (Modern Arabic & Persian)"
         $fontPath = Join-Path $fontsDir "Cairo.ttf"
         $b64 = Get-FontBase64 $fontPath
-        $cssContent = @"
-@font-face {
-    font-family: 'Cairo';
-    src: url('data:font/truetype;charset=utf-8;base64,$b64') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-body, p, li, blockquote, span, div, [class*="message"], [class*="content"] {
-    font-family: 'Cairo', 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif !important;
-}
-"@
+        $cssContent = Generate-FontCss "Cairo" $b64 "'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif"
     }
     "3" {
         $fontName = "Sahel (Smooth & High Readability)"
         $fontPath = Join-Path $fontsDir "Sahel.ttf"
         $b64 = Get-FontBase64 $fontPath
-        $cssContent = @"
-@font-face {
-    font-family: 'Sahel';
-    src: url('data:font/truetype;charset=utf-8;base64,$b64') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-body, p, li, blockquote, span, div, [class*="message"], [class*="content"] {
-    font-family: 'Sahel', 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif !important;
-}
-"@
+        $cssContent = Generate-FontCss "Sahel" $b64 "'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif"
     }
     "4" {
         $fontName = "Shabnam (Crisp Geometric)"
         $fontPath = Join-Path $fontsDir "Shabnam.ttf"
         $b64 = Get-FontBase64 $fontPath
-        $cssContent = @"
-@font-face {
-    font-family: 'Shabnam';
-    src: url('data:font/truetype;charset=utf-8;base64,$b64') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-body, p, li, blockquote, span, div, [class*="message"], [class*="content"] {
-    font-family: 'Shabnam', 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif !important;
-}
-"@
+        $cssContent = Generate-FontCss "Shabnam" $b64 "'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif"
     }
     "5" {
         $fontName = "Windows System Default (Segoe UI / Tahoma)"
-        $cssContent = @"
-/* Antigravity RTL - Windows System Default Font */
-body, p, li, blockquote, span, div, [class*="message"], [class*="content"] {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, Arial, sans-serif !important;
-}
-"@
+        $cssContent = Generate-FontCss "Segoe UI" "" "Tahoma, Arial, sans-serif"
     }
     "6" {
         Write-Host ""
@@ -147,28 +148,13 @@ body, p, li, blockquote, span, div, [class*="message"], [class*="content"] {
             $userFont = "Vazirmatn"
         }
         $fontName = "Custom: $userFont"
-        $cssContent = @"
-/* Antigravity RTL - Custom Font: $userFont */
-body, p, li, blockquote, span, div, [class*="message"], [class*="content"] {
-    font-family: '$userFont', 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif !important;
-}
-"@
+        $cssContent = Generate-FontCss $userFont "" "'Segoe UI', Tahoma, sans-serif"
     }
     Default {
         $fontName = "Vazirmatn (Modern UI - Default)"
         $fontPath = Join-Path $fontsDir "Vazirmatn.ttf"
         $b64 = Get-FontBase64 $fontPath
-        $cssContent = @"
-@font-face {
-    font-family: 'Vazirmatn';
-    src: url('data:font/truetype;charset=utf-8;base64,$b64') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-body, p, li, blockquote, span, div, [class*="message"], [class*="content"] {
-    font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif !important;
-}
-"@
+        $cssContent = Generate-FontCss "Vazirmatn" $b64 "-apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif"
     }
 }
 
