@@ -49,13 +49,14 @@ By default, **Google Antigravity** renders all conversational output, prompts, a
 ## ✨ Features
 
 * **⚡ 100% Real-Time & Automatic:** Directionality is computed on the fly as the model streams words. Paragraphs starting with RTL characters align to the right, while English paragraphs stay left.
-* **🎨 Embedded Offline Fonts (v1.2.0):** Includes genuine embedded offline fonts — **zero Windows font installation required**:
-  * **Vazirmatn** (Persian/Arabic Modern UI — Clean & Balanced) `[Default]`
-  * **Cairo** (#1 Modern Arabic & Persian UI Font — Google Fonts)
-  * **Sahel** (Soft, Elegant & High Readability)
-  * **Shabnam** (Crisp Geometric Reading Font)
-  * **Windows System Default** (Segoe UI / Tahoma / Arial)
-  * **Custom Font** (Specify any local font installed in Windows)
+* **🎨 Embedded Offline Fonts & Modular Typography (v1.2.1):** Includes embedded offline fonts or keep original typography — **zero Windows font installation required**:
+  * **Option 0:** **Stock Antigravity Font** (Skip / Keep original font unchanged — RTL alignment only)
+  * **Option 1:** **Vazirmatn** (Persian/Arabic Modern UI — Clean & Balanced) `[Default]`
+  * **Option 2:** **Cairo** (#1 Modern Arabic & Persian UI Font — Google Fonts)
+  * **Option 3:** **Sahel** (Soft, Elegant & High Readability)
+  * **Option 4:** **Shabnam** (Crisp Geometric Reading Font)
+  * **Option 5:** **Windows System Default** (Segoe UI / Tahoma / Arial)
+  * **Option 6:** **Custom Font** (Specify any local font installed in Windows)
 * **💻 Strict Code Block Isolation:** Inline code (`code`), multi-line code blocks (`pre`), Monaco editor, and terminal outputs are strictly preserved in Left-to-Right (`LTR`) with standard monospace typography.
 * **✍️ User Input Alignment:** As you type prompts in the input box, text direction automatically adjusts according to the language you are writing.
 * **🚀 Decoupled Process Architecture:** Antigravity launches independently via Windows Shell Execute. Closing the installer terminal window will **never** close Antigravity.
@@ -70,7 +71,10 @@ By default, **Google Antigravity** renders all conversational output, prompts, a
 1. Download the latest release from the [**Releases Page**](https://github.com/MOhammaDpirouznia/antigravity-rtl/releases) (or clone this repository).
 2. Extract the downloaded archive.
 3. Double-click **`apply-patch.bat`**.
-4. Select your preferred font (`1` for Vazirmatn, `2` for Sahel, `3` for System Default, or `4` for Custom).
+4. Select your preferred font:
+   * Press `0` to keep the stock Antigravity font unchanged (RTL alignment only).
+   * Press `Enter` (or `1`) for Vazirmatn.
+   * Press `2` for Cairo, `3` for Sahel, `4` for Shabnam, `5` for Windows Default, or `6` for Custom.
 5. The patcher will safely close Antigravity, create a backup, apply the patch, and relaunch Antigravity independently with full RTL support.
 
 ---

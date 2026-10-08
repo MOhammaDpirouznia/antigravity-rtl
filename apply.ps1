@@ -1,15 +1,15 @@
 # ==============================================================
-#  Antigravity RTL & BiDi Patcher v1.2.0
+#  Antigravity RTL & BiDi Patcher v1.2.1
 #  https://github.com/MOhammaDpirouznia/antigravity-rtl
 # ==============================================================
 
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-$Host.UI.RawUI.WindowTitle = "Antigravity RTL Patcher v1.2.0"
+$Host.UI.RawUI.WindowTitle = "Antigravity RTL Patcher v1.2.1"
 
 Clear-Host
 Write-Host ""
 Write-Host "==============================================================" -ForegroundColor Cyan
-Write-Host "            ANTIGRAVITY RTL & BIDI PATCHER v1.2.0             " -ForegroundColor Cyan
+Write-Host "            ANTIGRAVITY RTL & BIDI PATCHER v1.2.1             " -ForegroundColor Cyan
 Write-Host "  Automatic Right-to-Left Layout & Persian/Arabic Typography  " -ForegroundColor DarkCyan
 Write-Host "==============================================================" -ForegroundColor Cyan
 Write-Host ""
@@ -55,6 +55,8 @@ function Get-FontBase64 ($fontFile) {
 Write-Host "==============================================================" -ForegroundColor DarkGray
 Write-Host "          SELECT YOUR PREFERRED FONT (EMBEDDED OFFLINE)       " -ForegroundColor White
 Write-Host "==============================================================" -ForegroundColor DarkGray
+Write-Host "  [0] Stock Font      " -NoNewline -ForegroundColor Green
+Write-Host "(Skip / Keep original Antigravity font - RTL only)" -ForegroundColor Gray
 Write-Host "  [1] Vazirmatn       " -NoNewline -ForegroundColor Green
 Write-Host "(Persian/Arabic Modern UI - Clean & Balanced) [DEFAULT]" -ForegroundColor Gray
 Write-Host "  [2] Cairo           " -NoNewline -ForegroundColor Green
@@ -69,12 +71,18 @@ Write-Host "  [6] Custom Font     " -NoNewline -ForegroundColor Green
 Write-Host "(Specify any font already installed in Windows)" -ForegroundColor Gray
 Write-Host "--------------------------------------------------------------" -ForegroundColor DarkGray
 
-$choice = Read-Host "Select font option [1-6] (Press Enter for Vazirmatn)"
+$choice = Read-Host "Select font option [0-6] (Press Enter for Vazirmatn, or 0 for Stock Font)"
 
 $fontName = "Vazirmatn"
 $cssContent = ""
 
 switch ($choice) {
+    "0" {
+        $fontName = "Stock Antigravity Font (Original Unchanged)"
+        $cssContent = @"
+/* Antigravity RTL - Stock Font Preserved (No font-family override) */
+"@
+    }
     "2" {
         $fontName = "Cairo (Modern Arabic & Persian)"
         $fontPath = Join-Path $fontsDir "Cairo.ttf"
