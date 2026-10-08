@@ -62,11 +62,7 @@ try {
 # 3. Relaunch detached
 Write-Host "[3/3] Launching Antigravity in standalone mode..." -ForegroundColor DarkCyan
 
-$psi = New-Object System.Diagnostics.ProcessStartInfo
-$psi.FileName = $appExe
-$psi.UseShellExecute = $true
-$psi.WorkingDirectory = (Split-Path $appExe)
-[System.Diagnostics.Process]::Start($psi) | Out-Null
+Start-Process -FilePath "cmd.exe" -ArgumentList "/c start `"`" `"$appExe`"" -WindowStyle Hidden
 
 Write-Host ""
 Write-Host "==============================================================" -ForegroundColor Green

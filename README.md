@@ -49,7 +49,13 @@ By default, **Google Antigravity** renders all conversational output, prompts, a
 ## ✨ Features
 
 * **⚡ 100% Real-Time & Automatic:** Directionality is computed on the fly as the model streams words. Paragraphs starting with RTL characters align to the right, while English paragraphs stay left.
-* **🎨 Interactive Font Selector (v1.1.0):** Choose your favorite Persian/Arabic font directly from the terminal menu (`Vazirmatn`, `Sahel / Shabnam`, `Windows Default`, or any custom installed font).
+* **🎨 Embedded Offline Fonts (v1.2.0):** Includes genuine embedded offline fonts — **zero Windows font installation required**:
+  * **Vazirmatn** (Persian/Arabic Modern UI — Clean & Balanced) `[Default]`
+  * **Cairo** (#1 Modern Arabic & Persian UI Font — Google Fonts)
+  * **Sahel** (Soft, Elegant & High Readability)
+  * **Shabnam** (Crisp Geometric Reading Font)
+  * **Windows System Default** (Segoe UI / Tahoma / Arial)
+  * **Custom Font** (Specify any local font installed in Windows)
 * **💻 Strict Code Block Isolation:** Inline code (`code`), multi-line code blocks (`pre`), Monaco editor, and terminal outputs are strictly preserved in Left-to-Right (`LTR`) with standard monospace typography.
 * **✍️ User Input Alignment:** As you type prompts in the input box, text direction automatically adjusts according to the language you are writing.
 * **🚀 Decoupled Process Architecture:** Antigravity launches independently via Windows Shell Execute. Closing the installer terminal window will **never** close Antigravity.
