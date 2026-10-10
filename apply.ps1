@@ -1,15 +1,15 @@
 # ==============================================================
-#  Antigravity RTL & BiDi Patcher v1.2.1
+#  Antigravity RTL & BiDi Patcher v1.3.0
 #  https://github.com/MOhammaDpirouznia/antigravity-rtl
 # ==============================================================
 
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-$Host.UI.RawUI.WindowTitle = "Antigravity RTL Patcher v1.2.1"
+$Host.UI.RawUI.WindowTitle = "Antigravity RTL Patcher v1.3.0"
 
 Clear-Host
 Write-Host ""
 Write-Host "==============================================================" -ForegroundColor Cyan
-Write-Host "            ANTIGRAVITY RTL & BIDI PATCHER v1.2.1             " -ForegroundColor Cyan
+Write-Host "            ANTIGRAVITY RTL & BIDI PATCHER v1.3.0             " -ForegroundColor Cyan
 Write-Host "  Automatic Right-to-Left Layout & Persian/Arabic Typography  " -ForegroundColor DarkCyan
 Write-Host "==============================================================" -ForegroundColor Cyan
 Write-Host ""
@@ -59,19 +59,21 @@ Write-Host "  [0] Stock Font      " -NoNewline -ForegroundColor Green
 Write-Host "(Skip / Keep original Antigravity font - RTL only)" -ForegroundColor Gray
 Write-Host "  [1] Vazirmatn       " -NoNewline -ForegroundColor Green
 Write-Host "(Persian/Arabic Modern UI - Clean & Balanced) [DEFAULT]" -ForegroundColor Gray
-Write-Host "  [2] Cairo           " -NoNewline -ForegroundColor Green
+Write-Host "  [2] Lalezar         " -NoNewline -ForegroundColor Green
+Write-Host "(Bold, Distinct Retro Display Font - Highly Visible!)" -ForegroundColor Yellow
+Write-Host "  [3] Cairo           " -NoNewline -ForegroundColor Green
 Write-Host "(#1 Modern Arabic & Persian UI Font - Google Fonts)" -ForegroundColor Gray
-Write-Host "  [3] Sahel           " -NoNewline -ForegroundColor Green
+Write-Host "  [4] Sahel           " -NoNewline -ForegroundColor Green
 Write-Host "(Soft, Elegant & High Readability)" -ForegroundColor Gray
-Write-Host "  [4] Shabnam         " -NoNewline -ForegroundColor Green
+Write-Host "  [5] Shabnam         " -NoNewline -ForegroundColor Green
 Write-Host "(Crisp Geometric Reading Font)" -ForegroundColor Gray
-Write-Host "  [5] Windows Default " -NoNewline -ForegroundColor Green
+Write-Host "  [6] Windows Default " -NoNewline -ForegroundColor Green
 Write-Host "(Segoe UI / Tahoma / Arial)" -ForegroundColor Gray
-Write-Host "  [6] Custom Font     " -NoNewline -ForegroundColor Green
+Write-Host "  [7] Custom Font     " -NoNewline -ForegroundColor Green
 Write-Host "(Specify any font already installed in Windows)" -ForegroundColor Gray
 Write-Host "--------------------------------------------------------------" -ForegroundColor DarkGray
 
-$choice = Read-Host "Select font option [0-6] (Press Enter for Vazirmatn, or 0 for Stock Font)"
+$choice = Read-Host "Select font option [0-7] (Press Enter for Vazirmatn, 2 for Lalezar)"
 
 $fontName = "Vazirmatn"
 $cssContent = ""
@@ -120,28 +122,34 @@ switch ($choice) {
 "@
     }
     "2" {
+        $fontName = "Lalezar (Bold, Distinct Retro Display)"
+        $fontPath = Join-Path $fontsDir "Lalezar.ttf"
+        $b64 = Get-FontBase64 $fontPath
+        $cssContent = Generate-FontCss "Lalezar" $b64 "'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif"
+    }
+    "3" {
         $fontName = "Cairo (Modern Arabic & Persian)"
         $fontPath = Join-Path $fontsDir "Cairo.ttf"
         $b64 = Get-FontBase64 $fontPath
         $cssContent = Generate-FontCss "Cairo" $b64 "'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif"
     }
-    "3" {
+    "4" {
         $fontName = "Sahel (Smooth & High Readability)"
         $fontPath = Join-Path $fontsDir "Sahel.ttf"
         $b64 = Get-FontBase64 $fontPath
         $cssContent = Generate-FontCss "Sahel" $b64 "'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif"
     }
-    "4" {
+    "5" {
         $fontName = "Shabnam (Crisp Geometric)"
         $fontPath = Join-Path $fontsDir "Shabnam.ttf"
         $b64 = Get-FontBase64 $fontPath
         $cssContent = Generate-FontCss "Shabnam" $b64 "'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif"
     }
-    "5" {
+    "6" {
         $fontName = "Windows System Default (Segoe UI / Tahoma)"
         $cssContent = Generate-FontCss "Segoe UI" "" "Tahoma, Arial, sans-serif"
     }
-    "6" {
+    "7" {
         Write-Host ""
         $userFont = Read-Host "Enter your installed font name (e.g., IRANSans, Dana, B Nazanin)"
         if ([string]::IsNullOrWhiteSpace($userFont)) {
@@ -163,8 +171,66 @@ Write-Host "[CONFIG] Active Font: " -NoNewline -ForegroundColor Cyan
 Write-Host "$fontName" -ForegroundColor Yellow
 Write-Host ""
 
-# --- Step 2: Stop Running Instances ---
-Write-Host "[1/4] Closing running Antigravity processes..." -ForegroundColor DarkYellow
+# --- Step 2: Interactive Layout Selection (Sidebars Mirroring) ---
+Write-Host "==============================================================" -ForegroundColor DarkGray
+Write-Host "                LAYOUT & SIDEBAR POSITIONING                  " -ForegroundColor White
+Write-Host "==============================================================" -ForegroundColor DarkGray
+Write-Host "  [1] Standard Layout " -NoNewline -ForegroundColor Green
+Write-Host "(Projects on Left, Console/Files on Right) [DEFAULT]" -ForegroundColor Gray
+Write-Host "  [2] Mirrored RTL Layout " -NoNewline -ForegroundColor Green
+Write-Host "(Projects on Right, Console/Files on Left - Full RTL IDE)" -ForegroundColor Yellow
+Write-Host "--------------------------------------------------------------" -ForegroundColor DarkGray
+
+$layoutChoice = Read-Host "Select layout option [1-2] (Press Enter for Standard, 2 for Mirrored)"
+$layoutName = "Standard (Projects Left, Console Right)"
+
+if ($layoutChoice -eq "2") {
+    $layoutName = "Mirrored RTL (Projects Right, Console Left)"
+    $cssContent += @"
+
+/* ============================================================== */
+/*  Mirrored RTL Layout: Projects Sidebar on Right, Console Left  */
+/* ============================================================== */
+.flex-1.flex.min-h-0.relative > .relative.flex.w-full.h-full.outline-none {
+    flex-direction: row-reverse !important;
+}
+.relative.z-0.flex-1.flex.min-h-0.h-full > .relative.flex.w-full.h-full.outline-none {
+    flex-direction: row-reverse !important;
+}
+.flex-1.flex.min-h-0.relative > .absolute.left-0.top-0 {
+    left: auto !important;
+    right: 0 !important;
+}
+.flex-1.flex.min-h-0.relative > .absolute.right-0.top-0 {
+    right: auto !important;
+    left: 0 !important;
+}
+
+/* Fix overlaps for auxiliary pane tabs & chat header */
+.shrink-0.flex.items-center.gap-0.5.border-b {
+    padding-left: 42px !important;
+    padding-right: 8px !important;
+}
+.flex.items-center.gap-1.min-w-0.text-secondary-foreground {
+    padding-left: 42px !important;
+}
+"@
+}
+
+Write-Host ""
+Write-Host "[CONFIG] Active Layout: " -NoNewline -ForegroundColor Cyan
+Write-Host "$layoutName" -ForegroundColor Yellow
+Write-Host ""
+
+# --- Step 3: Stop Running Instances & Purge Stale Auto-Updates ---
+Write-Host "[1/4] Closing running Antigravity processes & clearing updater cache..." -ForegroundColor DarkYellow
+$updaterDir = "$env:LOCALAPPDATA\antigravity-updater"
+if (Test-Path $updaterDir) {
+    try {
+        Remove-Item -Path "$updaterDir\pending\*" -Recurse -Force -ErrorAction SilentlyContinue
+        Remove-Item -Path "$updaterDir\installer.exe" -Force -ErrorAction SilentlyContinue
+    } catch {}
+}
 $running = Get-Process -Name "Antigravity" -ErrorAction SilentlyContinue
 if ($running) {
     $running | Stop-Process -Force
@@ -219,6 +285,8 @@ Write-Host "   [SUCCESS] Antigravity RTL Patch applied successfully!      " -For
 Write-Host "==============================================================" -ForegroundColor Green
 Write-Host "  * Active Font       : " -NoNewline -ForegroundColor Gray
 Write-Host "$fontName (Embedded)" -ForegroundColor Cyan
+Write-Host "  * IDE Layout        : " -NoNewline -ForegroundColor Gray
+Write-Host "$layoutName" -ForegroundColor Cyan
 Write-Host "  * Text Alignment    : " -NoNewline -ForegroundColor Gray
 Write-Host "Real-Time Auto RTL (unicode-bidi: plaintext)" -ForegroundColor White
 Write-Host "  * Code Blocks       : " -NoNewline -ForegroundColor Gray

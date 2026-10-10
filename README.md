@@ -49,16 +49,23 @@ By default, **Google Antigravity** renders all conversational output, prompts, a
 ## ✨ Features
 
 * **⚡ 100% Real-Time & Automatic:** Directionality is computed on the fly as the model streams words. Paragraphs starting with RTL characters align to the right, while English paragraphs stay left.
-* **🎨 Embedded Offline Fonts & Modular Typography (v1.2.1):** Includes embedded offline fonts or keep original typography — **zero Windows font installation required**:
+* **📐 Interactive Layout Selection (Standard vs Mirrored RTL IDE) (v1.3.0):**
+  * **Option 1 (Standard):** Projects on Left, Console/Files on Right (RTL text only).
+  * **Option 2 (Mirrored RTL):** Full RTL IDE layout with Projects sidebar moved to the Right, and Terminal/Console/Files moved to the Left.
+  * **✨ Zero Button/Tab Overlaps:** Carefully engineered padding so auxiliary tabs and toggle buttons never collide.
+  * **🖱️ Natural Mouse Drag Resizing:** Mouse drag delta is automatically inverted for mirrored layout so dragging dividers expands/collapses in the intuitive mouse direction.
+* **🎨 Embedded Offline Fonts & Modular Typography (v1.3.0):** Includes offline embedded webfonts or your own custom local font — **zero Windows font installation required**:
   * **Option 0:** **Stock Antigravity Font** (Skip / Keep original font unchanged — RTL alignment only)
   * **Option 1:** **Vazirmatn** (Persian/Arabic Modern UI — Clean & Balanced) `[Default]`
-  * **Option 2:** **Cairo** (#1 Modern Arabic & Persian UI Font — Google Fonts)
-  * **Option 3:** **Sahel** (Soft, Elegant & High Readability)
-  * **Option 4:** **Shabnam** (Crisp Geometric Reading Font)
-  * **Option 5:** **Windows System Default** (Segoe UI / Tahoma / Arial)
-  * **Option 6:** **Custom Font** (Specify any local font installed in Windows)
+  * **Option 2:** **Lalezar** (Bold, Distinctive Retro Display Font — Highly Visible)
+  * **Option 3:** **Cairo** (#1 Modern Arabic & Persian UI Font — Google Fonts)
+  * **Option 4:** **Sahel** (Soft, Elegant & High Readability)
+  * **Option 5:** **Shabnam** (Crisp Geometric Reading Font)
+  * **Option 6:** **Windows System Default** (Segoe UI / Tahoma / Arial)
+  * **Option 7:** **Custom Font** (Specify any local font installed in Windows, e.g., IRANSans, Dana, B Nazanin)
 * **💻 Strict Code Block Isolation:** Inline code (`code`), multi-line code blocks (`pre`), Monaco editor, and terminal outputs are strictly preserved in Left-to-Right (`LTR`) with standard monospace typography.
 * **✍️ User Input Alignment:** As you type prompts in the input box, text direction automatically adjusts according to the language you are writing.
+* **🛡️ Auto-Updater Guard:** Disables silent background Google updates from overwriting your patched `app.asar` on Windows reboot.
 * **🚀 Decoupled Process Architecture:** Antigravity launches independently via Windows Shell Execute. Closing the installer terminal window will **never** close Antigravity.
 * **🛠️ DevTools Shortcut Enabled:** Adds `Ctrl + Shift + I` shortcut to easily inspect elements and toggle Developer Tools.
 * **🛡️ Zero Risk & Instant Rollback:** An automatic backup (`app.asar.backup`) is created before applying any changes. You can restore original factory settings with a single click.
@@ -71,11 +78,11 @@ By default, **Google Antigravity** renders all conversational output, prompts, a
 1. Download the latest release from the [**Releases Page**](https://github.com/MOhammaDpirouznia/antigravity-rtl/releases) (or clone this repository).
 2. Extract the downloaded archive.
 3. Double-click **`apply-patch.bat`**.
-4. Select your preferred font:
-   * Press `0` to keep the stock Antigravity font unchanged (RTL alignment only).
-   * Press `Enter` (or `1`) for Vazirmatn.
-   * Press `2` for Cairo, `3` for Sahel, `4` for Shabnam, `5` for Windows Default, or `6` for Custom.
-5. The patcher will safely close Antigravity, create a backup, apply the patch, and relaunch Antigravity independently with full RTL support.
+4. Select your preferred font [0-7] (Press `Enter` for Vazirmatn, `2` for Lalezar, etc.).
+5. Select your preferred layout:
+   * Press `Enter` (or `1`) for Standard Layout.
+   * Press `2` for Full Mirrored RTL Layout (Projects on Right, Console on Left).
+6. The patcher will safely close Antigravity, create a backup, apply the patch, and relaunch Antigravity independently with full RTL support.
 
 ---
 
