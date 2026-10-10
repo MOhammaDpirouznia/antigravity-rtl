@@ -1,15 +1,15 @@
 # ==============================================================
-#  Antigravity RTL & BiDi Patcher v1.3.0
+#  Antigravity RTL & BiDi Patcher v1.3.1
 #  https://github.com/MOhammaDpirouznia/antigravity-rtl
 # ==============================================================
 
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-$Host.UI.RawUI.WindowTitle = "Antigravity RTL Patcher v1.3.0"
+$Host.UI.RawUI.WindowTitle = "Antigravity RTL Patcher v1.3.1"
 
 Clear-Host
 Write-Host ""
 Write-Host "==============================================================" -ForegroundColor Cyan
-Write-Host "            ANTIGRAVITY RTL & BIDI PATCHER v1.3.0             " -ForegroundColor Cyan
+Write-Host "            ANTIGRAVITY RTL & BIDI PATCHER v1.3.1             " -ForegroundColor Cyan
 Write-Host "  Automatic Right-to-Left Layout & Persian/Arabic Typography  " -ForegroundColor DarkCyan
 Write-Host "==============================================================" -ForegroundColor Cyan
 Write-Host ""
@@ -207,8 +207,8 @@ if ($layoutChoice -eq "2") {
 }
 
 /* Fix overlaps for auxiliary pane tabs & chat header */
-.shrink-0.flex.items-center.gap-0.5.border-b {
-    padding-left: 42px !important;
+div[class*="pr-[72px]"], [class*="pl-1.5"][class*="pr-"] {
+    padding-left: 72px !important;
     padding-right: 8px !important;
 }
 .flex.items-center.gap-1.min-w-0.text-secondary-foreground {

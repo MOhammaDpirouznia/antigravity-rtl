@@ -49,20 +49,20 @@ By default, **Google Antigravity** renders all conversational output, prompts, a
 ## ✨ Features
 
 * **⚡ 100% Real-Time & Automatic:** Directionality is computed on the fly as the model streams words. Paragraphs starting with RTL characters align to the right, while English paragraphs stay left.
-* **📐 Interactive Layout Selection (Standard vs Mirrored RTL IDE) (v1.3.0):**
-  * **Option 1 (Standard):** Projects on Left, Console/Files on Right (RTL text only).
+* **📐 Interactive Layout Selection (Standard vs Mirrored RTL IDE) (v1.3.1):**
+  * **Option 1 (Standard):** Projects on Left, Console/Files on Right (standard layout with RTL text formatting).
   * **Option 2 (Mirrored RTL):** Full RTL IDE layout with Projects sidebar moved to the Right, and Terminal/Console/Files moved to the Left.
-  * **✨ Zero Button/Tab Overlaps:** Carefully engineered padding so auxiliary tabs and toggle buttons never collide.
-  * **🖱️ Natural Mouse Drag Resizing:** Mouse drag delta is automatically inverted for mirrored layout so dragging dividers expands/collapses in the intuitive mouse direction.
-* **🎨 Embedded Offline Fonts & Modular Typography (v1.3.0):** Includes offline embedded webfonts or your own custom local font — **zero Windows font installation required**:
-  * **Option 0:** **Stock Antigravity Font** (Skip / Keep original font unchanged — RTL alignment only)
+  * **✨ Zero Button/Tab Overlaps:** Resolved overlapping icons at the top-left between pane control buttons and auxiliary tabs (`Overview`, `Review`, `Terminal`).
+  * **🖱️ Natural Mouse Drag Direction:** In Mirrored RTL mode, divider resizing direction is automatically inverted to match mouse movement intuitively. Standard LTR mode remains 100% untouched.
+* **🎨 Embedded Offline Fonts & Custom Typography (v1.3.1):** Choose from 5 embedded webfonts, system defaults, or specify your own installed font without needing Windows font installs:
+  * **Option 0:** **Stock Antigravity Font** (Skip / Keep original font unchanged — RTL text alignment only)
   * **Option 1:** **Vazirmatn** (Persian/Arabic Modern UI — Clean & Balanced) `[Default]`
   * **Option 2:** **Lalezar** (Bold, Distinctive Retro Display Font — Highly Visible)
   * **Option 3:** **Cairo** (#1 Modern Arabic & Persian UI Font — Google Fonts)
   * **Option 4:** **Sahel** (Soft, Elegant & High Readability)
   * **Option 5:** **Shabnam** (Crisp Geometric Reading Font)
   * **Option 6:** **Windows System Default** (Segoe UI / Tahoma / Arial)
-  * **Option 7:** **Custom Font** (Specify any local font installed in Windows, e.g., IRANSans, Dana, B Nazanin)
+  * **Option 7:** **Custom Font** (Specify any font installed on your system, e.g., IRANSans, Dana, B Nazanin)
 * **💻 Strict Code Block Isolation:** Inline code (`code`), multi-line code blocks (`pre`), Monaco editor, and terminal outputs are strictly preserved in Left-to-Right (`LTR`) with standard monospace typography.
 * **✍️ User Input Alignment:** As you type prompts in the input box, text direction automatically adjusts according to the language you are writing.
 * **🛡️ Auto-Updater Guard:** Disables silent background Google updates from overwriting your patched `app.asar` on Windows reboot.
