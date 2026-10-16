@@ -1,16 +1,16 @@
 # ==============================================================
-#  Antigravity RTL & BiDi Patcher v1.3.1
+#  Antigravity RTL & Proxy Patcher v1.4.0
 #  https://github.com/MOhammaDpirouznia/antigravity-rtl
 # ==============================================================
 
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-$Host.UI.RawUI.WindowTitle = "Antigravity RTL Patcher v1.3.1"
+$Host.UI.RawUI.WindowTitle = "Antigravity RTL & Proxy Patcher v1.4.0"
 
 Clear-Host
 Write-Host ""
 Write-Host "==============================================================" -ForegroundColor Cyan
-Write-Host "            ANTIGRAVITY RTL & BIDI PATCHER v1.3.1             " -ForegroundColor Cyan
-Write-Host "  Automatic Right-to-Left Layout & Persian/Arabic Typography  " -ForegroundColor DarkCyan
+Write-Host "         ANTIGRAVITY RTL & PROXY PATCHER v1.4.0               " -ForegroundColor Cyan
+Write-Host "   RTL Layout, Persian Typography & Smart Proxy Manager       " -ForegroundColor DarkCyan
 Write-Host "==============================================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -222,7 +222,122 @@ Write-Host "[CONFIG] Active Layout: " -NoNewline -ForegroundColor Cyan
 Write-Host "$layoutName" -ForegroundColor Yellow
 Write-Host ""
 
-# --- Step 3: Stop Running Instances & Purge Stale Auto-Updates ---
+# --- Step 3: Interactive Proxy Configuration (Smart Auto-Detection) ---
+Write-Host "==============================================================" -ForegroundColor DarkGray
+Write-Host "             PROXY CONFIGURATION (SMART DETECTION)            " -ForegroundColor White
+Write-Host "==============================================================" -ForegroundColor DarkGray
+
+# Fast scanning of listening proxy ports
+$candidatePorts = @(10808, 10809, 7890, 7897, 2080, 2081, 1080)
+$detectedPort = $null
+$detectedProcess = $null
+
+try {
+    $connections = Get-NetTCPConnection -State Listen -LocalAddress 127.0.0.1 -ErrorAction SilentlyContinue |
+                   Where-Object { $_.LocalPort -in $candidatePorts }
+    if ($connections) {
+        $firstConn = $connections[0]
+        $detectedPort = $firstConn.LocalPort
+        $proc = Get-Process -Id $firstConn.OwningProcess -ErrorAction SilentlyContinue
+        if ($proc) { $detectedProcess = $proc.ProcessName }
+    }
+} catch {}
+
+if ($detectedPort) {
+    Write-Host "  [AUTO-DETECTED] Active local proxy found on port " -NoNewline -ForegroundColor Green
+    Write-Host "$detectedPort" -NoNewline -ForegroundColor Yellow
+    if ($detectedProcess) {
+        Write-Host " ($detectedProcess)" -ForegroundColor DarkCyan
+    } else {
+        Write-Host ""
+    }
+} else {
+    Write-Host "  [NOTICE] No active local proxy detected on standard ports." -ForegroundColor DarkGray
+}
+
+Write-Host "  [1] Antigravity Only (Isolated)" -NoNewline -ForegroundColor Green
+Write-Host " - Only Antigravity uses proxy; Windows stays direct [DEFAULT]" -ForegroundColor Gray
+Write-Host "  [2] Full Dev Mode (CLI & System)" -NoNewline -ForegroundColor Green
+Write-Host " - Antigravity + Git, Python, Pip, Curl, Npm" -ForegroundColor Gray
+Write-Host "  [3] Direct Connection (No Proxy)" -NoNewline -ForegroundColor Green
+Write-Host " - Disable proxy completely" -ForegroundColor Gray
+Write-Host "  [4] Custom Port & Mode" -NoNewline -ForegroundColor Green
+Write-Host " - Specify custom port manually" -ForegroundColor Gray
+Write-Host "--------------------------------------------------------------" -ForegroundColor DarkGray
+
+$proxyChoice = Read-Host "Select proxy option [1-4] (Press Enter for Antigravity Only with detected/default port)"
+
+$proxyPort = if ($detectedPort) { $detectedPort } else { 10808 }
+$proxyMode = "app_only"
+$proxyEnabled = $true
+$proxyLabel = "Antigravity Only (Port $proxyPort)"
+
+switch ($proxyChoice) {
+    "2" {
+        $proxyMode = "full_dev"
+        $proxyLabel = "Full Dev Mode (Antigravity + CLI & Tools on Port $proxyPort)"
+        try {
+            [System.Environment]::SetEnvironmentVariable("HTTP_PROXY", "http://127.0.0.1:$proxyPort", "User")
+            [System.Environment]::SetEnvironmentVariable("HTTPS_PROXY", "http://127.0.0.1:$proxyPort", "User")
+        } catch {}
+    }
+    "3" {
+        $proxyMode = "disabled"
+        $proxyEnabled = $false
+        $proxyLabel = "Direct Connection (Proxy Disabled)"
+        try {
+            [System.Environment]::SetEnvironmentVariable("HTTP_PROXY", $null, "User")
+            [System.Environment]::SetEnvironmentVariable("HTTPS_PROXY", $null, "User")
+        } catch {}
+    }
+    "4" {
+        Write-Host ""
+        $userPortInput = Read-Host "Enter your proxy port (e.g. 10808, 7890, 2080)"
+        if ($userPortInput -match '^\d+$') {
+            $proxyPort = [int]$userPortInput
+        }
+        $modeChoice = Read-Host "Select mode: [1] Antigravity Only (Default), [2] Full Dev (System/CLI)"
+        if ($modeChoice -eq "2") {
+            $proxyMode = "full_dev"
+            $proxyLabel = "Full Dev Mode (Antigravity + CLI on Port $proxyPort)"
+            try {
+                [System.Environment]::SetEnvironmentVariable("HTTP_PROXY", "http://127.0.0.1:$proxyPort", "User")
+                [System.Environment]::SetEnvironmentVariable("HTTPS_PROXY", "http://127.0.0.1:$proxyPort", "User")
+            } catch {}
+        } else {
+            $proxyMode = "app_only"
+            $proxyLabel = "Antigravity Only (Port $proxyPort)"
+            try {
+                [System.Environment]::SetEnvironmentVariable("HTTP_PROXY", $null, "User")
+                [System.Environment]::SetEnvironmentVariable("HTTPS_PROXY", $null, "User")
+            } catch {}
+        }
+    }
+    Default {
+        $proxyMode = "app_only"
+        $proxyLabel = "Antigravity Only (Isolated on Port $proxyPort)"
+        try {
+            [System.Environment]::SetEnvironmentVariable("HTTP_PROXY", $null, "User")
+            [System.Environment]::SetEnvironmentVariable("HTTPS_PROXY", $null, "User")
+        } catch {}
+    }
+}
+
+$proxyConfigJson = @"
+{
+  "enabled": $($proxyEnabled.ToString().ToLower()),
+  "mode": "$proxyMode",
+  "port": $proxyPort,
+  "host": "127.0.0.1"
+}
+"@
+
+Write-Host ""
+Write-Host "[CONFIG] Active Proxy : " -NoNewline -ForegroundColor Cyan
+Write-Host "$proxyLabel" -ForegroundColor Yellow
+Write-Host ""
+
+# --- Step 4: Stop Running Instances & Purge Stale Auto-Updates ---
 Write-Host "[1/4] Closing running Antigravity processes & clearing updater cache..." -ForegroundColor DarkYellow
 $updaterDir = "$env:LOCALAPPDATA\antigravity-updater"
 if (Test-Path $updaterDir) {
@@ -249,16 +364,20 @@ if (-not (Test-Path $backupAsar)) {
     Write-Host "[2/4] Backup already exists (app.asar.backup). Preserving original." -ForegroundColor Gray
 }
 
-# --- Step 4: Apply Patched Package & Write Font Configuration ---
-Write-Host "[3/4] Installing RTL patch & embedding selected font..." -ForegroundColor DarkCyan
+# --- Step 5: Apply Patched Package & Write Configurations ---
+Write-Host "[3/4] Installing RTL patch, embedding font & writing proxy config..." -ForegroundColor DarkCyan
 try {
-    # 4a. Copy patched app.asar
+    # 5a. Copy patched app.asar
     Copy-Item -Path $sourceAsar -Destination $targetAsar -Force
 
-    # 4b. Write dynamic custom-rtl.css with embedded font
+    # 5b. Write dynamic custom-rtl.css with embedded font
     [System.IO.File]::WriteAllText($customCss, $cssContent, [System.Text.Encoding]::UTF8)
 
-    # 4c. Copy fonts directory for reference
+    # 5c. Write proxy-config.json
+    $targetProxyConfig = Join-Path $targetDir "proxy-config.json"
+    [System.IO.File]::WriteAllText($targetProxyConfig, $proxyConfigJson, [System.Text.Encoding]::UTF8)
+
+    # 5d. Copy fonts directory for reference
     $targetFonts = Join-Path $targetDir "fonts"
     if (Test-Path $fontsDir) {
         Copy-Item -Path $fontsDir -Destination $targetDir -Recurse -Force
@@ -273,7 +392,7 @@ try {
     exit 1
 }
 
-# --- Step 5: Launch Antigravity 100% Detached (No Console Hijack) ---
+# --- Step 6: Launch Antigravity 100% Detached (No Console Hijack) ---
 Write-Host "[4/4] Launching Antigravity in detached background mode..." -ForegroundColor DarkCyan
 
 # Launching via 'cmd /c start' completely decouples Antigravity from this console window
@@ -281,12 +400,16 @@ Start-Process -FilePath "cmd.exe" -ArgumentList "/c start `"`" `"$appExe`"" -Win
 
 Write-Host ""
 Write-Host "==============================================================" -ForegroundColor Green
-Write-Host "   [SUCCESS] Antigravity RTL Patch applied successfully!      " -ForegroundColor Green
+Write-Host "   [SUCCESS] Antigravity RTL & Proxy Patch applied!           " -ForegroundColor Green
 Write-Host "==============================================================" -ForegroundColor Green
 Write-Host "  * Active Font       : " -NoNewline -ForegroundColor Gray
 Write-Host "$fontName (Embedded)" -ForegroundColor Cyan
 Write-Host "  * IDE Layout        : " -NoNewline -ForegroundColor Gray
 Write-Host "$layoutName" -ForegroundColor Cyan
+Write-Host "  * Proxy Mode        : " -NoNewline -ForegroundColor Gray
+Write-Host "$proxyLabel" -ForegroundColor Cyan
+Write-Host "  * In-App Proxy Menu : " -NoNewline -ForegroundColor Gray
+Write-Host "Top-Bar Menu > Proxy 🌐 (Switch modes anytime!)" -ForegroundColor Yellow
 Write-Host "  * Text Alignment    : " -NoNewline -ForegroundColor Gray
 Write-Host "Real-Time Auto RTL (unicode-bidi: plaintext)" -ForegroundColor White
 Write-Host "  * Code Blocks       : " -NoNewline -ForegroundColor Gray

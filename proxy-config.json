@@ -1,0 +1,6 @@
+{
+  "enabled": true,
+  "mode": "app_only",
+  "port": 10808,
+  "host": "127.0.0.1"
+}
