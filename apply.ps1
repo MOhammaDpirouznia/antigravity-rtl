@@ -1,15 +1,15 @@
 # ==============================================================
-#  Antigravity RTL & Proxy Patcher v1.4.0
+#  Antigravity RTL & Proxy Patcher v1.4.1
 #  https://github.com/MOhammaDpirouznia/antigravity-rtl
 # ==============================================================
 
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-$Host.UI.RawUI.WindowTitle = "Antigravity RTL & Proxy Patcher v1.4.0"
+$Host.UI.RawUI.WindowTitle = "Antigravity RTL & Proxy Patcher v1.4.1"
 
 Clear-Host
 Write-Host ""
 Write-Host "==============================================================" -ForegroundColor Cyan
-Write-Host "         ANTIGRAVITY RTL & PROXY PATCHER v1.4.0               " -ForegroundColor Cyan
+Write-Host "         ANTIGRAVITY RTL & PROXY PATCHER v1.4.1               " -ForegroundColor Cyan
 Write-Host "   RTL Layout, Persian Typography & Smart Proxy Manager       " -ForegroundColor DarkCyan
 Write-Host "==============================================================" -ForegroundColor Cyan
 Write-Host ""
@@ -228,7 +228,7 @@ Write-Host "             PROXY CONFIGURATION (SMART DETECTION)            " -For
 Write-Host "==============================================================" -ForegroundColor DarkGray
 
 # Fast scanning of listening proxy ports
-$candidatePorts = @(10808, 10809, 7890, 7897, 2080, 2081, 1080)
+$candidatePorts = @(10808, 12334, 7890, 10809, 2334, 7897, 2080, 2081, 1080, 8080)
 $detectedPort = $null
 $detectedProcess = $null
 

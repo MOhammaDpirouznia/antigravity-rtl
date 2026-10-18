@@ -49,12 +49,13 @@ By default, **Google Antigravity** renders all conversational output, prompts, a
 ## ✨ Features
 
 * **⚡ 100% Real-Time & Automatic:** Directionality is computed on the fly as the model streams words. Paragraphs starting with RTL characters align to the right, while English paragraphs stay left.
-* **🌐 Smart Proxy Manager & In-App Top Bar Menu (New in v1.4.0):**
-  * **Top-Bar Menu (`Proxy 🌐`):** Integrated directly into Antigravity's native menu bar (alongside `File`, `View`, `Window`). Switch proxy modes or change ports anytime without running any script!
+* **🌐 Smart Proxy Manager & In-App Top Bar & Login Menu (New in v1.4.1):**
+  * **Top-Bar & Login Screen Menu (`Proxy 🌐`):** Integrated directly into Antigravity's title bar (alongside `File`, `View`, `Window`), AND directly accessible on the **Login / Welcome Screen** (top-left) to resolve Google sign-in connection issues without re-running scripts.
+  * **Native Support for Hiddify (`12334`), v2rayN (`10808`), Clash (`7890`), v2ray Alt (`10809`):** Updated Hiddify port to modern `12334` (mixed HTTP/SOCKS inbound).
   * **Mode 1 — Antigravity Only (Isolated):** Routes 100% of Antigravity's UI and AI Language Server (`language_server.exe`) through your proxy, while leaving the rest of Windows and normal browsing completely direct and untouched.
   * **Mode 2 — Full Dev Mode (CLI & System):** Routes Antigravity AND all command-line developer tools (`git`, `python`, `pip`, `npm`, `curl`) through the proxy for seamless package installations.
   * **Mode 3 — Direct Connection:** Disables proxy with a single click.
-  * **Smart 5ms Auto-Detection:** Automatically scans listening local proxy ports (`10808` v2rayN/Xray, `7890` Clash, `2080` Hiddify, etc.) and auto-configures instantly.
+  * **Smart Fast Auto-Detection:** Automatically scans listening local proxy ports (`10808` v2rayN/Xray, `12334` Hiddify, `7890` Clash, `10809`, `2334`, etc.) and auto-configures instantly.
 * **📐 Interactive Layout Selection (Standard vs Mirrored RTL IDE):**
   * **Option 1 (Standard):** Projects on Left, Console/Files on Right (standard layout with RTL text formatting).
   * **Option 2 (Mirrored RTL):** Full RTL IDE layout with Projects sidebar moved to the Right, and Terminal/Console/Files moved to the Left.
